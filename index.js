@@ -65,51 +65,6 @@ client.on(Events.InteractionCreate, async interaction =>{
     }
 })
 
-
-
-// client.on('messageCreate', async (message) => {
-//     if (message.author.bot) return;
-//     if (message.content.toLowerCase().startsWith('message reaction test')) {
-//         const reactionEmoji = client.emojis.cache.get('589154027145789441');
-//         message.react(reactionEmoji).catch(err => {
-//             message.reply("Emoji React Error!");
-//             console.error("Error, failed to react", err);
-//         });
-//     } else if (message.content.toLowerCase().startsWith("!react")) {
-//         const args = message.content.split(' ').slice(1);
-//         if (args.length !== 1){
-//             return message.reply("Please provide a valid emoji!");
-//         }
-//         const emoji = args[0];
-//         if (!emoji) {
-//             return message.reply("Please provide an emoji for me to react with!");
-//         }
-//         const emojiRegex = /<a?:\w+:(\d+)>|([\p{Emoji}\u200D\uFE0F]+)/gu;
-//         const emojis = emoji.match(emojiRegex);
-//         if (!emojis || emojis.length!== 1 || !isValidEmoji(emojis[0])){
-//             return message.reply("Please provide a valid emoji!")
-//         }
-
-//         message.reply({ content: 'I will react to my own message!' }).then(sentMessage => {
-//             sentMessage.react(emojis[0]).catch(err => {
-//                 message.reply("Invalid emoji!");
-//                 console.error("Error, failed to react", err);
-//             });
-//         }).catch(err => {
-//             message.reply("Failed to send message! Someone tell Con there is a problem with my code.");
-//             console.error("Failed to send message", err);
-//         });
-//     }
-// });
-// const isValidEmoji = (input) => {
-//     const customEmojiMatch = input.match(/<a?:\w+:(\d+)>/);
-//     if (customEmojiMatch) {
-//         const customEmojiId = customEmojiMatch[1];
-//         return client.emojis.cache.has(customEmojiId);
-//     }
-//     return /\p{Emoji}/u.test(input);
-// };
-
 client.on('messageCreate', async (message) => {
     const excludedRoleIds = ["801827572463173652", "589146768470704144",]; 
     if (!message.member) {
