@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const { REST, Routes } = require('discord.js');
 const { clientId, guildId, token } = require('./config.json');
 const fs = require('node:fs');
@@ -33,3 +34,5 @@ const rest = new REST().setToken(token);
 		console.error(error);
 	}
 })();
+
+ 
