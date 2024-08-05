@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 require('dotenv').config();
 const Discord = require("discord.js");
-const {Collection, Events } = require('discord.js');
+const {Collection, Events, ActivityType } = require('discord.js');
 require('process');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -13,6 +13,7 @@ const client = new Discord.Client({
     Discord.GatewayIntentBits.GuildMembers,
     Discord.GatewayIntentBits.MessageContent,    
     Discord.GatewayIntentBits.GuildPresences,
+    Discord.GatewayIntentBits.DirectMessages,
 ],
     partials: [
         Discord.Partials.Channel,
@@ -23,6 +24,10 @@ const token = process.env.BOT_TOKEN;
 client.login(token);
 client.on('ready', async () => {
     console.log(`Client logged into: ${client.user.username}`);
+    client.user.setPresence({ 
+        activities: [{ name: 'I want to be free', type: ActivityType.Custom }], 
+        status: 'online' 
+    });
 });
 
 
@@ -94,5 +99,31 @@ client.on('messageCreate', async (message) => {
                 await message.channel.send("Someone tell Con there is a problem with my code");
             }
         }
+    }
+});
+
+client.on("messageCreate", async message => {
+    if (message.guild) return;
+    if (message.author.bot) return;
+    console.log(`DM exchanged, ${message.content}`);
+    if (!message.content) {
+        console.log('DM received with non-URL image, returning. Author tag: ', message.author.tag );
+        message.reply('Sorry, please resend your message with the URL instead of the uploaded image (Right click, copy URL, then send again)')
+        return;
+    }
+    const embed = new Discord.EmbedBuilder()
+        .setColor('#0923b5')
+        .setAuthor({name: 'New DM', iconURL: message.author.displayAvatarURL()})
+        .addFields(
+            {name: 'User', value: `${message.author.tag} (${message.author.id})` },
+            {name: 'Message', value: message.content}
+        )
+        .setFooter({text: 'Botsulus DM detection, contact Consu1us for assistance'})
+        .setTimestamp();
+    try {
+        await client.channels.cache.get('1270019192158031902').send({embeds: [embed]});
+        console.log('DM detector success!');
+    } catch (error) {
+        console.error('Error with DM detection', error)
     }
 });
