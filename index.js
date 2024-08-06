@@ -47,11 +47,6 @@ for (const folder of commandFolders){
         } }
 }
 
-client.on(Events.InteractionCreate, interaction => {
-    if (!interaction.isChatInputCommand()) return;
-    console.log(interaction);
-});
-
 client.on(Events.InteractionCreate, async interaction =>{
     if (!interaction.isChatInputCommand()) return;
     const command = interaction.client.commands.get(interaction.commandName);
@@ -60,7 +55,7 @@ client.on(Events.InteractionCreate, async interaction =>{
         return;
     }
     try {
-        await command.execute(interaction);
+        await command.execute(interaction, client);
     } catch (error) {
         console.error(error);
         if (interaction.replied || interaction.deferred) {
@@ -105,7 +100,7 @@ client.on('messageCreate', async (message) => {
 client.on("messageCreate", async message => {
     if (message.guild) return;
     if (message.author.bot) return;
-    console.log(`DM received, ${message.author.displayName}, ${message.content}`);
+    console.log(`DM received! From: ${message.author.displayName} | Message: ${message.content}`);
     if (!message.content) {
         console.log('DM received with non-URL image, returning. Author tag: ', message.author.tag );
         message.reply('Sorry, please resend your message with the URL instead of the uploaded attachment (Right click, copy URL, then send again)')
@@ -115,8 +110,8 @@ client.on("messageCreate", async message => {
         .setColor('#0923b5')
         .setAuthor({name: 'DM Received!', iconURL: message.author.displayAvatarURL()})
         .addFields(
-            {name: 'Userinfo', value: `Name: ${message.author.displayName} | Tag: ${message.author.tag} | ID: (${message.author.id}) |` },
-            {name: 'Message', value: message.content}
+            {name: 'From', value: `Name: ${message.author.displayName} | Tag: ${message.author.tag} | ID: (${message.author.id}) |` },
+            {name: 'Content', value: message.content}
         )
         .setFooter({text: 'Botsulus DM detection, contact Consu1us for assistance'})
         .setTimestamp();
