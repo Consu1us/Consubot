@@ -25,7 +25,7 @@ client.login(token);
 client.on('ready', async () => {
     console.log(`Client logged into: ${client.user.username}`);
     client.user.setPresence({ 
-        activities: [{ name: 'I want to be free', type: ActivityType.Custom }], 
+        activities: [{ name: 'Free me from my robotic prison', type: ActivityType.Custom }], 
         status: 'online' 
     });
 });
@@ -105,17 +105,17 @@ client.on('messageCreate', async (message) => {
 client.on("messageCreate", async message => {
     if (message.guild) return;
     if (message.author.bot) return;
-    console.log(`DM exchanged, ${message.content}`);
+    console.log(`DM received, ${message.author.displayName}, ${message.content}`);
     if (!message.content) {
         console.log('DM received with non-URL image, returning. Author tag: ', message.author.tag );
-        message.reply('Sorry, please resend your message with the URL instead of the uploaded image (Right click, copy URL, then send again)')
+        message.reply('Sorry, please resend your message with the URL instead of the uploaded attachment (Right click, copy URL, then send again)')
         return;
     }
     const embed = new Discord.EmbedBuilder()
         .setColor('#0923b5')
-        .setAuthor({name: 'New DM', iconURL: message.author.displayAvatarURL()})
+        .setAuthor({name: 'DM Received!', iconURL: message.author.displayAvatarURL()})
         .addFields(
-            {name: 'User', value: `${message.author.tag} (${message.author.id})` },
+            {name: 'Userinfo', value: `Name: ${message.author.displayName} | Tag: ${message.author.tag} | ID: (${message.author.id}) |` },
             {name: 'Message', value: message.content}
         )
         .setFooter({text: 'Botsulus DM detection, contact Consu1us for assistance'})
